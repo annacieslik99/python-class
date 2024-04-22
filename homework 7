@@ -1,0 +1,69 @@
+
+#EXERCISE 7.1
+
+import math
+
+v1 = Vector(1, 0, 0)
+v2 = Vector(0, 0, 1)
+
+
+class Vector:
+
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+
+    def cross(self, other):   # return the cross product (Vector)
+      x = self.y * other.z - self.z * other.y
+      y = self.z * other.x - self.x * other.z
+      z = self.x * other.y - self.y * other.x
+      return Vector(x, y, z)
+
+    def find_axis(v1,v2):
+
+      # calculating cross product of v1 and v2
+      cross_product = v1.cross(v2)
+
+
+      if cross_product == Vector(0, 0, 0):
+            raise ValueError("Vectors v1 and v2 are parallel")
+
+
+find_axis(v1, v2)
+
+
+print("Vector perpendicular to v1 and v2:", cross_product)
+
+
+
+  
+# EXERCISE 7.2
+
+# Create the following infinite iterators:
+
+import random
+import itertools
+
+# (a) returning 0, 1, 0, 1, 0, 1, ...
+
+
+def iterator_a():
+  for i in itertools.cycle([0,1]):
+    yield num
+
+# (b) returning randomly 0 or 1 on demand
+
+
+def iterator_b():
+  for i in itertools.repeat():
+    yield random.choice([0,1])
+
+# (c) returning 0, 1, 0, -1, 0, 1, 0, -1, ...
+
+
+def iterator_c():
+  for i in itertools.cycle([0,1,0,-1]):
+    yield i
+
+
