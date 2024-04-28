@@ -41,7 +41,7 @@ v3 = v1[::-1]
 print(v3)
 
 
-#EXERCISE 8.3
+#EXERCISE 3
 
 #(a) Create a two dimensional array called m1, shape=(4,5).
 
