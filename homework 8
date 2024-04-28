@@ -1,0 +1,66 @@
+# EXERCISE 1 a
+
+import numpy as np
+
+array1 = np.arange(0,1.1,0.1, dtype=float).reshape(11,)
+print(array1)
+
+# EXERCISE 1 b
+
+array2 = np.zeros((3,5), dtype=int)
+print(array2)
+
+# EXERCISE 1 c
+
+x = complex(0,1)
+array3 = np.array([x**i for i in range(9)]).reshape(9,)
+print(array3)
+
+
+  
+  # EXERCISE 2
+
+import numpy as np
+import random
+
+# (a) Create an arbitrary one dimensional array called v1.
+
+v1 = np.random.randint(0,11,10)
+print(v1)
+
+
+# (b) Create a new array (or a view) v2 which consists of items with odd indices of v1.
+
+v2 = v1[v1 % 2 == 1]
+print(v2)
+
+
+# (c) Create a new array (or a view) v3 in backwards ordering from v1.
+
+v3 = v1[::-1]
+print(v3)
+
+
+#EXERCISE 8.3
+
+#(a) Create a two dimensional array called m1, shape=(4,5).
+
+import numpy as np 
+
+m1 = np.arange(0,20,1).reshape(4,5)
+print(m1)
+
+#(b) Create a new array (or a view) m2 from m1, in which the elements of each row are in reverse order.
+
+m2 = m1[:, ::-1]
+print(m2)
+
+# (c) Create a new array (or a view) m3 from m1, in which the elements of each column are in reverse order. 
+
+m3 = m1[::-1, :]
+print(m3)
+
+#  (d) Remove the first row, the last row, the first column, and the last column of m1, and create a new array (or a view) m4.
+
+m4 = m1[1,1:4]
+print(m4)
