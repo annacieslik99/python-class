@@ -3,39 +3,51 @@
 
 import math
 
-v1 = Vector(1, 0, 0)
-v2 = Vector(0, 0, 1)
-
-
 class Vector:
-
     def __init__(self, x, y, z):
         self.x = x
         self.y = y
         self.z = z
 
-    def cross(self, other):   # return the cross product (Vector)
-      x = self.y * other.z - self.z * other.y
-      y = self.z * other.x - self.x * other.z
-      z = self.x * other.y - self.y * other.x
-      return Vector(x, y, z)
+    def __repr__(self):
+        return f"Vector({self.x}, {self.y}, {self.z})"
 
-    def find_axis(v1,v2):
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y and self.z == other.z
 
-      # calculating cross product of v1 and v2
-      cross_product = v1.cross(v2)
+    def __sub__(self, other):
+        return Vector(self.x - other.x, self.y - other.y, self.z - other.z)
 
+    def __mul__(self, other):
+        return self.x * other.x + self.y * other.y + self.z * other.z
 
-      if cross_product == Vector(0, 0, 0):
-            raise ValueError("Vectors v1 and v2 are parallel")
+    def cross_product(self, other):
+        return Vector(self.y * other.z - self.z * other.y,
+                      self.z * other.x - self.x * other.z,
+                      self.x * other.y - self.y * other.x)
 
+    def length(self):
+        return math.sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
 
-find_axis(v1, v2)
+    def normalized(self):
+        length = self.length()
+        return Vector(self.x / length, self.y / length, self.z / length)
 
+def find_axis(v1, v2):
+    v3 = v1.cross_product(v2)
+    if v3 == Vector(0,0,0):
+      raise ValueError("v1 and v2 are parallel")
 
-print("Vector perpendicular to v1 and v2:", cross_product)
+    d = v3.length()
+    v3 = Vector(v3.x / d, v3.y / d, v3.z / d)
+    return v3
 
-
+v1= Vector(9,4,1)
+v2=Vector(7,1,5)
+try:
+  print(find_axis(v1,v2))
+except ValueError as x:
+    print(x)
 
   
 # EXERCISE 7.2
