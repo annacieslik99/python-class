@@ -1,0 +1,34 @@
+# EXERCISE 9.1
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0,10, 100)
+
+sin_x = np.sin(x)
+cos_x = np.cos(x)
+exp_x = np.exp(-x)
+
+plt.plot(x, sin_x, 'r-', label = 'sin(x)')
+plt.plot(x, cos_x, 'g--', label = 'cos(x)')
+plt.plot(x, exp_x, 'b:', label = 'exp(-x)')
+plt.legend()
+
+
+# EXERCISE 9.2
+
+import matplotlib.pyplot as plt
+import numpy as np
+import random
+
+n=100
+x = np.random.rand(n)
+y = np.random.rand(n)
+
+area = np.abs(x) + np.abs(y)
+distance = np.sqrt(x**2+y**2)
+colors = np.where(distance<1, 'g', 'r')
+
+plt.figure(figsize=(8, 8))
+plt.scatter(x, y, s=area*100, c=colors, alpha=0.75)
+
