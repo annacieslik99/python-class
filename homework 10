@@ -1,0 +1,127 @@
+# EXERCISE 10.1
+
+C:\Users\ciesl>mkdir VE1
+
+C:\Users\ciesl> cd VE1
+
+C:\Users\ciesl\VE1>python3 -m venv env
+
+C:\Users\ciesl\VE1>.\env\Scripts\activate
+
+(env) C:\Users\ciesl\VE1>pip install numpy matplotlib pandas
+
+# OUTPUT
+
+Collecting numpy
+  Downloading numpy-1.26.4-cp39-cp39-win_amd64.whl (15.8 MB)
+     ---------------------------------------- 15.8/15.8 MB 6.3 MB/s eta 0:00:00
+Collecting matplotlib
+  Downloading matplotlib-3.8.4-cp39-cp39-win_amd64.whl (7.7 MB)
+     ---------------------------------------- 7.7/7.7 MB 6.0 MB/s eta 0:00:00
+Collecting pandas
+  Downloading pandas-2.2.2-cp39-cp39-win_amd64.whl (11.6 MB)
+     ---------------------------------------- 11.6/11.6 MB 5.3 MB/s eta 0:00:00
+Collecting contourpy>=1.0.1
+  Downloading contourpy-1.2.1-cp39-cp39-win_amd64.whl (182 kB)
+     ---------------------------------------- 182.8/182.8 KB 10.8 MB/s eta 0:00:00
+Collecting python-dateutil>=2.7
+  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+     ---------------------------------------- 229.9/229.9 KB 7.1 MB/s eta 0:00:00
+Collecting fonttools>=4.22.0
+  Downloading fonttools-4.51.0-cp39-cp39-win_amd64.whl (2.2 MB)
+     ---------------------------------------- 2.2/2.2 MB 6.1 MB/s eta 0:00:00
+Collecting pyparsing>=2.3.1
+  Downloading pyparsing-3.1.2-py3-none-any.whl (103 kB)
+     ---------------------------------------- 103.2/103.2 KB 3.0 MB/s eta 0:00:00
+Collecting packaging>=20.0
+  Downloading packaging-24.0-py3-none-any.whl (53 kB)
+     ---------------------------------------- 53.5/53.5 KB ? eta 0:00:00
+Collecting cycler>=0.10
+  Downloading cycler-0.12.1-py3-none-any.whl (8.3 kB)
+Collecting importlib-resources>=3.2.0
+  Downloading importlib_resources-6.4.0-py3-none-any.whl (38 kB)
+Collecting pillow>=8
+  Downloading pillow-10.3.0-cp39-cp39-win_amd64.whl (2.5 MB)
+     ---------------------------------------- 2.5/2.5 MB 9.5 MB/s eta 0:00:00
+Collecting kiwisolver>=1.3.1
+  Downloading kiwisolver-1.4.5-cp39-cp39-win_amd64.whl (56 kB)
+     ---------------------------------------- 56.2/56.2 KB 3.1 MB/s eta 0:00:00
+Collecting tzdata>=2022.7
+  Downloading tzdata-2024.1-py2.py3-none-any.whl (345 kB)
+     ---------------------------------------- 345.4/345.4 KB 10.8 MB/s eta 0:00:00
+Collecting pytz>=2020.1
+  Downloading pytz-2024.1-py2.py3-none-any.whl (505 kB)
+     ---------------------------------------- 505.5/505.5 KB 10.5 MB/s eta 0:00:00
+Collecting zipp>=3.1.0
+  Downloading zipp-3.18.1-py3-none-any.whl (8.2 kB)
+Collecting six>=1.5
+  Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
+Installing collected packages: pytz, zipp, tzdata, six, pyparsing, pillow, packaging, numpy, kiwisolver, fonttools, cycler, python-dateutil, importlib-resources, contourpy, pandas, matplotlib
+Successfully installed contourpy-1.2.1 cycler-0.12.1 fonttools-4.51.0 importlib-resources-6.4.0 kiwisolver-1.4.5 matplotlib-3.8.4 numpy-1.26.4 packaging-24.0 pandas-2.2.2 pillow-10.3.0 pyparsing-3.1.2 python-dateutil-2.9.0.post0 pytz-2024.1 six-1.16.0 tzdata-2024.1 zipp-3.18.1
+
+(env) C:\Users\ciesl\VE1>pip list
+
+# OUTPUT
+
+Package             Version
+------------------- -----------
+contourpy           1.2.1
+cycler              0.12.1
+fonttools           4.51.0
+importlib_resources 6.4.0
+kiwisolver          1.4.5
+matplotlib          3.8.4
+numpy               1.26.4
+packaging           24.0
+pandas              2.2.2
+pillow              10.3.0
+pip                 22.0.4
+pyparsing           3.1.2
+python-dateutil     2.9.0.post0
+pytz                2024.1
+setuptools          58.1.0
+six                 1.16.0
+tzdata              2024.1
+zipp                3.18.1
+
+(env) C:\Users\ciesl\VE1>deactivate
+C:\Users\ciesl\VE1>
+
+
+
+# EXERCISE 10.2
+
+import numpy as np
+import pandas as pd
+
+dates = pd.date_range(start='20240501', end='20240511')
+
+data = [17, 15, 15, 17, 16, 15, 14, 15, 17, 19, 14]
+s = pd.Series(data, index = dates)
+
+s.index = s.index.rename('index')
+s = s.rename('data')
+
+print(s)
+
+
+
+# EXERCISE 10.3
+
+import pandas as pd
+
+dictionary = [
+    {'Name': 'Hydrogen', 'Symbol': 'H', 'Weight': '1.008'},
+    {'Name': 'Helium', 'Symbol': 'He', 'Weight': '4.0026'},
+    {'Name': 'Lithium', 'Symbol': 'Li', 'Weight': '6.94'},
+    {'Name': 'Beryllium', 'Symbol': 'Be', 'Weight': '9.0122'},
+    {'Name': 'Boron', 'Symbol': 'B', 'Weight': '10.81'},
+    {'Name': 'Carbon', 'Symbol': 'C', 'Weight': '12.011'},
+    {'Name': 'Nitrogen', 'Symbol': 'N', 'Weight': '14.007'},
+    {'Name': 'Oxygen', 'Symbol': 'O', 'Weight': '15.999'},
+    {'Name': 'Fluorine', 'Symbol': 'F', 'Weight': '18.998'},
+    {'Name': 'Neon', 'Symbol': 'Ne', 'Weight': '20.180'}
+]
+
+df = pd.DataFrame(dictionary, index=range(1, 11), columns = ['Name', 'Symbol', 'Weight'])
+print(df)
