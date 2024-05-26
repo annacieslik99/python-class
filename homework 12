@@ -1,0 +1,102 @@
+#EXERCISE 12.1 
+
+import math
+import pytest
+# class 
+
+class Vector:
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+
+    def __repr__(self):
+        return f"Vector({self.x}, {self.y}, {self.z})"
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y and self.z == other.z
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y, self.z + other.z)
+
+    def __sub__(self, other):
+        return Vector(self.x - other.x, self.y - other.y, self.z - other.z)
+
+    def __mul__(self, other):
+        return self.x * other.x + self.y * other.y + self.z * other.z
+
+    def cross(self, other):
+        return Vector(
+            self.y * other.z - self.z * other.y,
+            self.z * other.x - self.x * other.z,
+            self.x * other.y - self.y * other.x
+        )
+
+    def length(self):
+        return math.sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
+
+    def __hash__(self):
+        return hash((self.x, self.y, self.z))
+
+# tests
+
+def test_vector_init():
+  vec = Vector(1,2,3)
+  assert vec.x == 1
+  assert vec.y == 2
+  assert vec.z == 3
+
+def test_vector_repr():
+  vec = Vector(1, 2, 3)
+  assert repr(vec) == "Vector(1, 2, 3)"
+
+def test_vector_eq():
+  v1 = Vector(1, 2, 3)
+  v2 = Vector(1, 2, 3)
+  v3 = Vector(3, 2, 1)
+  assert v1 == v2
+  assert v2 != v3
+
+def test_vector_add():
+  v1 = Vector(1, 2, 3)
+  v2 = Vector(1, 2, 3)
+  assert v1 + v2 == Vector(2, 4, 6)
+
+def test_vector_sub():
+  v1 = Vector(1, 2, 3)
+  v2 = Vector(1, 1, 1)
+  assert v1 - v2 == Vector(0, 1, 2)
+
+def test_vector_mul():
+  v1 = Vector(1, 2, 3)
+  v2 = Vector(1, 2, 3)
+  assert v1 * v2 == 14
+
+def test_vector_cross():
+  v1 = Vector(1, 2, 3)
+  v2 = Vector(1, 2, 3)
+  assert v1.cross(v2) == Vector(0, 0, 0)
+
+def test_vector_length():
+  vec = Vector(1, 2, 3)
+  assert vec.length() == math.sqrt(14)
+
+def test_vector_hash():
+   v1 = Vector(1, 2, 3)
+   v2 = Vector(1, 2, 3)
+   v3 = Vector(3, 2, 1)
+   assert hash(v1) == hash(v2)
+   assert hash(v1) != hash(v3)
+   
+def test_vector_set():
+  v1 = Vector(1, 2, 3)
+  v2 = Vector(4, 5, 6)
+  S = set([v1, v1, v2])
+  assert len(S) == 2
+
+# running the tests
+if __name__ == "__main__":
+    pytest.main()
