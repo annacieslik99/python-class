@@ -100,3 +100,25 @@ def test_vector_set():
 # running the tests
 if __name__ == "__main__":
     pytest.main()
+
+# EXERCISE 12.2
+
+import networkx as nx
+import matplotlib.pyplot as plt
+import random
+
+n_nodes = 7
+n_edges = 12
+
+G = nx.Graph()
+
+G.add_nodes_from(range(n_nodes))
+
+while G.number_of_edges() < n_edges:
+  node1 = random.randint(0, n_nodes)
+  node2 = random.randint(0, n_nodes)
+  if node1 != node2 and not G.has_edge(node1, node2):
+    G.add_edge(node1, node2)
+
+nx.draw(G, with_labels=True)
+plt.show()
