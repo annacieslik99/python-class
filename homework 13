@@ -1,0 +1,21 @@
+from PIL import Image
+
+
+image1 = Image.open(r'C:\Users\ciesl\Downloads\flower.jpg')
+image1.mode 
+image1.size
+image1.format
+image1.show()
+
+with Image.open(r'C:\Users\ciesl\Downloads\flower.jpg') as im:
+    im.thumbnail((128, 128))
+    im.save(r'C:\Users\ciesl\Downloads\flower_thumbnail.jpg', "JPEG")
+
+
+# RESULTS 
+>>> image1.mode
+'RGB'
+>>> image1.size
+(1886, 2829)
+>>> image1.format
+'JPEG'
