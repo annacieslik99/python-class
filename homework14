@@ -44,3 +44,45 @@ for n in n_list:
 
 # faster code with Numba
 
+from numba import njit
+import numpy as np
+import matplotlib.pyplot as plt
+
+@njit
+def random_numbers(n):
+    inside = []
+    nr_inside = 0
+    outside = []
+    for i in range(n):
+        x, y = np.random.rand(), np.random.rand()
+        if x**2 + y**2 < 1:
+            inside.append((x, y))
+            nr_inside += 1
+        else:
+            outside.append((x, y))
+    
+    pi_est = (nr_inside / n) * 4
+    return pi_est, inside, outside
+
+def plot(inside, outside, n, pi_est):
+    plt.figure(figsize=(6, 6))
+    if inside:
+        inside = np.array(inside)
+        plt.scatter(inside[:, 0], inside[:, 1], color='green', s=1, label='Inside Circle')
+    if outside:
+        outside = np.array(outside)
+        plt.scatter(outside[:, 0], outside[:, 1], color='red', s=1, label='Outside Circle')
+    
+    plt.title(f'Points: {n}, π Estimate: {pi_est:.6f}')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.legend()
+    plt.gca().set_aspect('equal', adjustable='box')
+    plt.show()
+
+n_list = [10, 10**2, 10**3, 10**4, 10**5, 10**6]
+
+for n in n_list:
+    pi_est, inside, outside = random_numbers(n)
+    plot(inside, outside, n, pi_est)
+    print(f"No points: {n:>7}, Pi estimate: {pi_est:.6f}")
