@@ -1,0 +1,207 @@
+#Etap 1 
+#Przekształcenie posiadanych plików csv w xlsx. Wiersz polecenia.
+python3 -m venv myenv
+myenv\Scripts\activate
+pip install --upgrade pip
+pip install pandas openpyxl
+python
+
+import os
+import pandas as pd
+
+def convert_csv_to_xlsx(csv_file_path, xlsx_file_path):
+    try:
+        df = pd.read_csv(csv_file_path)
+        if df.empty:
+            print(f'Plik {csv_file_path} jest pusty. Pomijam.')
+            return
+        df.to_excel(xlsx_file_path, index=False)
+        print(f'Skonwertowano: {csv_file_path} na {xlsx_file_path}')
+    except pd.errors.EmptyDataError:
+        print(f'Plik {csv_file_path} nie zawiera danych. Pomijam.')
+    except Exception as e:
+        print(f'Wystąpił błąd podczas przetwarzania pliku {csv_file_path}: {e}')
+
+folder_path = r'C:\Users\ciesl\Pulpit\livedead B3\LD dzien 1\liczenie pliki'
+
+for filename in os.listdir(folder_path):
+    if filename.endswith('.csv'):
+        csv_file_path = os.path.join(folder_path, filename)
+        xlsx_file_path = os.path.join(folder_path, filename.replace('.csv', '.xlsx'))
+        convert_csv_to_xlsx(csv_file_path, xlsx_file_path)
+
+#Etap 2 
+#Odczytanie i zapisanie w osobnym pliku xlsx największej liczby z pierwszej kolumny #każdego z plików w folderze. Wiersz polecenia.
+
+folder_path = r'C:\Users\ciesl\Pulpit\livedead B3\LD dzien 3\liczenie pliki\wszystkie'
+output_file = 'wszystkie_dzien3.xlsx'
+output_folder = '/content/drive/MyDrive/python zadanie'
+output_path = os.path.join(output_folder, output_file)
+
+def find_max(file_path):
+    df = pd.read_excel(file_path)
+    max_value = df.iloc[:, 0].max()
+    return max_value
+
+def iterate_folder(folder_path, output_path):
+    max_values = []
+    for filename in os.listdir(folder_path):
+        if filename.endswith(".xlsx"):
+            file_path = os.path.join(folder_path, filename)
+            max_value = find_max(file_path)
+            max_values.append({"Nazwa pliku": filename, "Liczba komórek": max_value})
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    max_values_df = pd.DataFrame(max_values)
+    max_values_df.to_excel(output_path, index=False)
+
+iterate_folder(folder_path, output_path)
+
+#Etap 3
+#Wygenerowanie nowego pliku xlsx i umieszczenie w nim powstałych w poprzednim etapie #kolumn. Google Colab.
+
+import os
+import pandas as pd
+from google.colab import drive
+drive.mount('/content/drive')
+
+file_names = ["wszystkie_dzien3.xlsx", "martwe_dzien3.xlsx"]
+output_file_name = "dzien3_wszystkie_martwe.xlsx"
+folder_path = '/content/drive/MyDrive/python zadanie/'
+def merging(folder_path, file_names, output_file_name):
+  try:
+    file_paths = [os.path.join(folder_path, file_name) for file_name in file_names]
+    output_file_path = os.path.join(folder_path, output_file_name)
+    df1 = pd.read_excel(file_paths[0])
+    df2 = pd.read_excel(file_paths[1])
+    df1.columns = ["Nazwa wszystkie", "Liczba wszystkie"]
+    df2.columns = ["Nazwa martwe", "Liczba martwe"]
+    merged_df = pd.concat([df1, df2], axis=1)
+    merged_df.to_excel(output_file_path, index=False)
+    print(f"Files merged successfully into {output_file_path}")
+  except Exception as e:
+    print(f"An error occurred: {e}")
+
+merging(folder_path, file_names, output_file_name)
+
+#Etap 4
+#Obliczenie żywotności komórek.
+
+def obliczanie_zywotnosci(file_path, output_file_path):
+  try:
+    df = pd.read_excel(file_path)
+    df["Żywe komórki"] = df.iloc[:, 1] - df.iloc[:, 3]
+    df["Żywotność komórek"] = (df["Żywe komórki"] / df.iloc[:, 1]) * 100
+    
+    new_column_name = os.path.splitext(os.path.basename(file_path))[0]
+    next_available_column = len(df.columns)
+    df.insert(next_available_column, new_column_name, df["Żywotność komórek"])
+    df.to_excel(file_path, index=False)
+    print(f"Viability calculated and saved to {file_path}")
+    
+    df.to_excel(output_file_path, index=False)
+    print(f"Viability calculated and saved to {output_file_path}")
+    
+  except Exception as e:
+    print(f"An error occurred: {e}")
+
+file_path = '/content/drive/MyDrive/python zadanie/dzien3_wszystkie_martwe.xlsx '  
+output_file_path = '/content/drive/MyDrive/python zadanie/viability_dzien3.xlsx'
+obliczanie_zywotnosci(file_path, output_file_path)
+
+#Etap 5
+#Wygenerowanie statystyk opisowych.
+
+def stats(file_path, output_file_path):
+  try:
+    df = pd.read_excel(file_path)
+    n = df.iloc[:, 5].count()
+    mean = df.iloc[:, 5].mean()
+    median = df.iloc[:, 5].median()
+    sd = df.iloc[:, 5].std()
+    sem = sd / (n ** 0.5)
+    results_df = pd.DataFrame({
+        "Parametr": ["n", "Średnia", "Mediana", "Odchylenie standardowe", "SEM"],
+        "Wartość": [n, mean, median, sd, sem]
+    })
+
+    df["Parametr"] = results_df["Parametr"]
+    df["Wartość"] = results_df["Wartość"]
+
+    df.to_excel(output_file_path, index=False)
+    print(f"Statistics calculated and saved to {output_file_path}")
+
+  except Exception as e:
+    print(f"An error occurred: {e}")
+file_path = '/content/drive/MyDrive/python zadanie/viability_dzien3.xlsx'  
+output_file_path = '/content/drive/MyDrive/python zadanie/ viability_dzien3_stats.xlsx' 
+stats(file_path, output_file_path)
+
+#Etap 6 
+#Wykonanie testu ANOVA.
+
+import scipy.stats as stats
+from scipy.stats import tukey_hsd
+
+def anova_tukey(file_path, output_file_path):
+  try:
+    df = pd.read_excel(file_path)
+
+    groups = []
+    group_names = []
+    for i in range(5, len(df.columns)):
+      groups.append(df.iloc[:, i].dropna().values)
+      group_names.append(df.columns[i])
+
+    fvalue, pvalue = stats.f_oneway(*groups)
+
+    data = pd.melt(df, id_vars=['Nazwa wszystkie'], value_vars=group_names)
+    data = data.dropna()
+    tukey_result = tukey_hsd(*[group['value'] for name, group in data.groupby('variable')])
+
+    print("Wyniki ANOVA:")
+    print(f"F-value: {fvalue}")
+    print(f"p-value: {pvalue}")
+
+    print("\nTukey:")
+    print(tukey_result)
+
+  except Exception as e:
+    print(f"An error occurred: {e}")
+
+file_path = '/content/drive/MyDrive/python zadanie/ viability_dzien3.xlsx' 
+output_file_path = '/content/drive/MyDrive/python zadanie/viability_dzien3_anova.xlsx'
+anova_tukey(file_path, output_file_path)
+
+#Etap 7
+#Wygenerowanie wykresów.
+
+def wykresy(file_path):
+  try:    
+    df = pd.read_excel(file_path)
+
+    groups = []
+    for i in range(5, len(df.columns)):
+      groups.append(df.iloc[:, i].dropna().values)
+    
+    plt.figure()
+    plt.boxplot(groups)
+    plt.xticks(range(1, len(groups) + 1), df.columns[5:])
+    plt.ylabel("Żywotność komórek (%)")
+    plt.title("Żywotność komórek po różnych czasach")
+    plt.show()
+    plt.savefig("/content/drive/MyDrive/python zadanie/box_plot_dzien3.jpg")
+
+    plt.figure()
+    plt.violinplot(groups, showmeans=True)
+    plt.xticks(range(1, len(groups) + 1), df.columns[5:])
+    plt.ylabel("Żywotność komórek (%)")
+    plt.title("Żywotność komórek po różnych czasach")
+    plt.show()
+    plt.savefig("/content/drive/MyDrive/python zadanie/ violin_plot_dzien3.jpg")
+
+  except Exception as e:
+    print(f"An error occurred: {e}")
+
+file_path = '/content/drive/MyDrive/python zadanie/viability_dzien3.xlsx'  
+wykresy(file_path)
